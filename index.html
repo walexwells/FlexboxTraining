@@ -1,0 +1,377 @@
+<!doctype html>
+<head>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/mode-css.js"></script>
+	<style>
+
+	* {
+		box-sizing: border-box;
+	}
+
+	#editor {
+        position: relative;
+        width: 500px;
+        height: 75vh;
+    }
+
+    .helpPanel {
+        width: 500px;
+        height: 25vh;
+        overflow: auto;
+    }
+
+    body {
+    	display: flex;
+    	flex-direction: row;
+    	height: 100vh;
+    	margin: 0;
+    	padding: 0;
+    }
+
+    body>:nth-child(1){
+    	flex: 1;
+    }
+
+    .base { height: 50vh; padding: 1em; }
+	.base>:nth-child(1) { background-color: #D29398 }
+	.base>:nth-child(2) { background-color: #D7B297 }
+	.base>:nth-child(3) { background-color: #5E8682 }
+	.base>:nth-child(4) { background-color: #84B27D }
+
+	.base>:nth-child(1)>:nth-child(1) { background-color: #FBE8E9 }
+	.base>:nth-child(1)>:nth-child(2) { background-color: #F6CBCE }
+	.base>:nth-child(1)>:nth-child(3) { background-color: #B1656A }
+	.base>:nth-child(1)>:nth-child(4) { background-color: #8E4147 }
+
+	.base>:nth-child(2)>:nth-child(1) { background-color: #FFF4EB }
+	.base>:nth-child(2)>:nth-child(2) { background-color: #FDE3D0 }
+	.base>:nth-child(2)>:nth-child(3) { background-color: #B58967 }
+	.base>:nth-child(2)>:nth-child(4) { background-color: #926543 }
+
+	.base>:nth-child(3)>:nth-child(1) { background-color: #BAC9C7 }
+	.base>:nth-child(3)>:nth-child(2) { background-color: #819D9A }
+	.base>:nth-child(3)>:nth-child(3) { background-color: #40716C }
+	.base>:nth-child(3)>:nth-child(4) { background-color: #2A5B55 }
+
+	.base>:nth-child(4)>:nth-child(1) { background-color: #D7E6D5 }
+	.base>:nth-child(4)>:nth-child(2) { background-color: #B1D1AC }
+	.base>:nth-child(4)>:nth-child(3) { background-color: #5E9656 }
+	.base>:nth-child(4)>:nth-child(4) { background-color: #407937 }
+
+	[data-challenge] { height: 50vh; padding: 1em; }
+	[data-challenge]>:nth-child(1) { background-color: #D29398 }
+	[data-challenge]>:nth-child(2) { background-color: #D7B297 }
+	[data-challenge]>:nth-child(3) { background-color: #5E8682 }
+	[data-challenge]>:nth-child(4) { background-color: #84B27D }
+
+	[data-challenge]>:nth-child(1)>:nth-child(1) { background-color: #FBE8E9 }
+	[data-challenge]>:nth-child(1)>:nth-child(2) { background-color: #F6CBCE }
+	[data-challenge]>:nth-child(1)>:nth-child(3) { background-color: #B1656A }
+	[data-challenge]>:nth-child(1)>:nth-child(4) { background-color: #8E4147 }
+
+	[data-challenge]>:nth-child(2)>:nth-child(1) { background-color: #FFF4EB }
+	[data-challenge]>:nth-child(2)>:nth-child(2) { background-color: #FDE3D0 }
+	[data-challenge]>:nth-child(2)>:nth-child(3) { background-color: #B58967 }
+	[data-challenge]>:nth-child(2)>:nth-child(4) { background-color: #926543 }
+
+	[data-challenge]>:nth-child(3)>:nth-child(1) { background-color: #BAC9C7 }
+	[data-challenge]>:nth-child(3)>:nth-child(2) { background-color: #819D9A }
+	[data-challenge]>:nth-child(3)>:nth-child(3) { background-color: #40716C }
+	[data-challenge]>:nth-child(3)>:nth-child(4) { background-color: #2A5B55 }
+
+	[data-challenge]>:nth-child(4)>:nth-child(1) { background-color: #D7E6D5 }
+	[data-challenge]>:nth-child(4)>:nth-child(2) { background-color: #B1D1AC }
+	[data-challenge]>:nth-child(4)>:nth-child(3) { background-color: #5E9656 }
+	[data-challenge]>:nth-child(4)>:nth-child(4) { background-color: #407937 }
+
+	[data-challenge="1"] {display: flex;}
+
+	[data-challenge="1"]>:nth-child(1){ }
+	[data-challenge="1"]>:nth-child(1)>:nth-child(1){ }
+	[data-challenge="1"]>:nth-child(1)>:nth-child(2){ }
+	[data-challenge="1"]>:nth-child(1)>:nth-child(3){ }
+	[data-challenge="1"]>:nth-child(1)>:nth-child(4){ }
+
+	[data-challenge="1"]>:nth-child(2){ }
+	[data-challenge="1"]>:nth-child(2)>:nth-child(1){ }
+	[data-challenge="1"]>:nth-child(2)>:nth-child(2){ }
+	[data-challenge="1"]>:nth-child(2)>:nth-child(3){ }
+	[data-challenge="1"]>:nth-child(2)>:nth-child(4){ }
+
+	[data-challenge="1"]>:nth-child(3){ }
+	[data-challenge="1"]>:nth-child(3)>:nth-child(1){ }
+	[data-challenge="1"]>:nth-child(3)>:nth-child(2){ }
+	[data-challenge="1"]>:nth-child(3)>:nth-child(3){ }
+	[data-challenge="1"]>:nth-child(3)>:nth-child(4){ }
+
+	[data-challenge="1"]>:nth-child(4){ }
+	[data-challenge="1"]>:nth-child(4)>:nth-child(1){ }
+	[data-challenge="1"]>:nth-child(4)>:nth-child(2){ }
+	[data-challenge="1"]>:nth-child(4)>:nth-child(3){ }
+	[data-challenge="1"]>:nth-child(4)>:nth-child(4){ }
+
+
+	[data-challenge="2"] {
+		display: flex;
+		flex-direction: column;
+	}
+
+	[data-challenge="2"]>:nth-child(1){ flex: 1; }
+	[data-challenge="2"]>:nth-child(1)>:nth-child(1){ }
+	[data-challenge="2"]>:nth-child(1)>:nth-child(2){ }
+	[data-challenge="2"]>:nth-child(1)>:nth-child(3){ }
+	[data-challenge="2"]>:nth-child(1)>:nth-child(4){ }
+
+	[data-challenge="2"]>:nth-child(2){ flex: 2; }
+	[data-challenge="2"]>:nth-child(2)>:nth-child(1){ }
+	[data-challenge="2"]>:nth-child(2)>:nth-child(2){ }
+	[data-challenge="2"]>:nth-child(2)>:nth-child(3){ }
+	[data-challenge="2"]>:nth-child(2)>:nth-child(4){ }
+
+	[data-challenge="2"]>:nth-child(3){ flex: 0; }
+	[data-challenge="2"]>:nth-child(3)>:nth-child(1){ }
+	[data-challenge="2"]>:nth-child(3)>:nth-child(2){ }
+	[data-challenge="2"]>:nth-child(3)>:nth-child(3){ }
+	[data-challenge="2"]>:nth-child(3)>:nth-child(4){ }
+
+	[data-challenge="2"]>:nth-child(4){ display: none;}
+	[data-challenge="2"]>:nth-child(4)>:nth-child(1){ }
+	[data-challenge="2"]>:nth-child(4)>:nth-child(2){ }
+	[data-challenge="2"]>:nth-child(4)>:nth-child(3){ }
+	[data-challenge="2"]>:nth-child(4)>:nth-child(4){ }
+
+	[data-challenge="3"] {
+		display: flex;
+	}
+
+	[data-challenge="3"]>:nth-child(1){
+		flex: 1;
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+	}
+	[data-challenge="3"]>:nth-child(1)>:nth-child(1){ }
+	[data-challenge="3"]>:nth-child(1)>:nth-child(2){ }
+	[data-challenge="3"]>:nth-child(1)>:nth-child(3){ }
+	[data-challenge="3"]>:nth-child(1)>:nth-child(4){ }
+
+	[data-challenge="3"]>:nth-child(2){
+		flex: 1;
+		display: flex;
+		justify-content: space-between;
+		flex-direction: column;
+	}
+	[data-challenge="3"]>:nth-child(2)>:nth-child(1){ }
+	[data-challenge="3"]>:nth-child(2)>:nth-child(2){ }
+	[data-challenge="3"]>:nth-child(2)>:nth-child(3){ }
+	[data-challenge="3"]>:nth-child(2)>:nth-child(4){ }
+
+	[data-challenge="3"]>:nth-child(3){
+		flex: 1;
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+	}
+	[data-challenge="3"]>:nth-child(3)>:nth-child(1){ }
+	[data-challenge="3"]>:nth-child(3)>:nth-child(2){ }
+	[data-challenge="3"]>:nth-child(3)>:nth-child(3){
+		flex-grow: 1;
+		display: flex;
+		justify-content: center;
+		flex-direction: column
+	}
+	[data-challenge="3"]>:nth-child(3)>:nth-child(4){ }
+
+	[data-challenge="3"]>:nth-child(4){
+		flex: 1;
+		display: flex;
+		justify-content: center;
+		flex-direction: column-reverse;
+	}
+	[data-challenge="3"]>:nth-child(4)>:nth-child(1){ }
+	[data-challenge="3"]>:nth-child(4)>:nth-child(2){ }
+	[data-challenge="3"]>:nth-child(4)>:nth-child(3){ }
+	[data-challenge="3"]>:nth-child(4)>:nth-child(4){ }
+
+
+	[data-challenge="4"] {
+		display: flex;
+		flex-direction: column;
+	}
+
+	[data-challenge="4"]>:nth-child(1){
+		order: 1;
+		display: flex;
+		flex-wrap: wrap;
+	}
+	[data-challenge="4"]>:nth-child(1)>div {
+		border: solid;
+		margin: 10px;
+		padding: 2px;
+		width: 500px;
+	}
+	[data-challenge="4"]>:nth-child(1)>:nth-child(1){ }
+	[data-challenge="4"]>:nth-child(1)>:nth-child(2){ }
+	[data-challenge="4"]>:nth-child(1)>:nth-child(3){ }
+	[data-challenge="4"]>:nth-child(1)>:nth-child(4){ }
+
+	[data-challenge="4"]>:nth-child(2){ display: none; }
+	[data-challenge="4"]>:nth-child(2)>:nth-child(1){ }
+	[data-challenge="4"]>:nth-child(2)>:nth-child(2){ }
+	[data-challenge="4"]>:nth-child(2)>:nth-child(3){ }
+	[data-challenge="4"]>:nth-child(2)>:nth-child(4){ }
+
+	[data-challenge="4"]>:nth-child(3){
+		order: 1;
+		display: flex;
+		flex-wrap: wrap;
+	}
+	[data-challenge="4"]>:nth-child(3)>div {
+		border: solid;
+		margin: 10px;
+		padding: 2px;
+	}
+	[data-challenge="4"]>:nth-child(3)>:nth-child(1){ }
+	[data-challenge="4"]>:nth-child(3)>:nth-child(2){ flex-basis: 800px; flex-grow: 1;}
+	[data-challenge="4"]>:nth-child(3)>:nth-child(3){ }
+	[data-challenge="4"]>:nth-child(3)>:nth-child(4){ }
+
+	[data-challenge="4"]>:nth-child(4){
+		order: 0;
+		display: flex;
+		justify-content: space-around;
+	}
+	[data-challenge="4"]>:nth-child(4)>div {
+		border: solid;
+		margin: 10px;
+		padding: 2px;
+	}
+	[data-challenge="4"]>:nth-child(4)>:nth-child(1){ }
+	[data-challenge="4"]>:nth-child(4)>:nth-child(2){ }
+	[data-challenge="4"]>:nth-child(4)>:nth-child(3){ }
+	[data-challenge="4"]>:nth-child(4)>:nth-child(4){ }
+
+	</style>
+	<style id="dynamicStyle">
+
+	</style>
+<head>
+<body>
+<div class="leftPanel">
+	<div class="base">
+		<div>
+			<div>Patrick Sharp</div>
+			<div>Derek Barnett</div>
+			<div>Rhonda Barnes</div>
+			<div>Hilda Terry</div>
+		</div>
+		<div>
+			<div>Patricia Todd</div>
+			<div>Juanita Brewer</div>
+			<div>Patsy Castro</div>
+			<div>Jeff Warner</div>
+		</div>
+		<div>
+			<div>Derrick Soto</div>
+			<div>Monique Parsons</div>
+			<div>Deanna Wright</div>
+			<div>Troy Carson</div>
+		</div>
+		<div>
+			<div>Shannon Marsh</div>
+			<div>Marcella Ramos</div>
+			<div>Herman Mckenzie</div>
+			<div>Heidi Gonzales</div>
+		</div>
+	</div>
+
+	<div data-challenge="1">
+		<div>
+			<div>Patrick Sharp</div>
+			<div>Derek Barnett</div>
+			<div>Rhonda Barnes</div>
+			<div>Hilda Terry</div>
+		</div>
+		<div>
+			<div>Patricia Todd</div>
+			<div>Juanita Brewer</div>
+			<div>Patsy Castro</div>
+			<div>Jeff Warner</div>
+		</div>
+		<div>
+			<div>Derrick Soto</div>
+			<div>Monique Parsons</div>
+			<div>Deanna Wright</div>
+			<div>Troy Carson</div>
+		</div>
+		<div>
+			<div>Shannon Marsh</div>
+			<div>Marcella Ramos</div>
+			<div>Herman Mckenzie</div>
+			<div>Heidi Gonzales</div>
+		</div>
+	</div>
+</div>
+<div class="rightPanel">
+
+	<div id="editor">
+.base { /*display: flex;*/ }
+
+.base>:nth-child(1){ }
+
+.base>:nth-child(2){ }
+
+.base>:nth-child(3){ }
+
+.base>:nth-child(4){ }
+	</div>
+	<div class="helpPanel">
+		<p>Edit the CSS above to make the top panel match the bottom panel. Use the buttons below to navigate to different challenges</p>
+		<p>Remember to change the window size and verify that your solution is adaptive in the same way the bottom panel is.</p>
+		<p>
+			For documentation I recomend:
+			<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout">CSS Flexible Box Layout</a>
+		</p>
+		<div>
+			Challenge #<span id="challengeNumber">1</span>
+			<button id="prevButton">Previous</button>
+			<button id="nextButton">Next</button>
+		</div>
+	</div>
+</div>
+<script>
+	var styleEl = document.getElementById('dynamicStyle')
+	var editor = ace.edit("editor");
+	var CssMode = ace.require("ace/mode/css").Mode;
+	var challengeNumberEl = document.getElementById('challengeNumber')
+	var prevButtonEl = document.getElementById('prevButton')
+	var nextButtonEl = document.getElementById('nextButton')
+	var challengeEl = document.querySelector('[data-challenge]')
+	var currentChallenge = 1
+	var maxChallenge = 4
+
+	editor.session.setMode(new CssMode());
+	editor.getSession().on('change', function(e) {
+		styleEl.innerHTML = editor.getValue()
+	});
+
+	function update() {
+		challengeEl.dataset.challenge = currentChallenge
+		challengeNumberEl.textContent = currentChallenge
+		prevButtonEl.disabled = currentChallenge == 1
+		nextButtonEl.disabled = currentChallenge == maxChallenge
+	}
+
+	prevButtonEl.addEventListener('click',function(){
+		currentChallenge--
+		update()
+	})
+
+	nextButtonEl.addEventListener('click',function(){
+		currentChallenge++
+		update()
+	})
+
+	update()
+</script>
+</body>
